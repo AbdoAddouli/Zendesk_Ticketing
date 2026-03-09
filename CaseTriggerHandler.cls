@@ -1,5 +1,9 @@
 public with sharing class CaseTriggerHandler {
     public static void handleCaseAfterInsert(List<Case> newRecords) {
+        if(System.isBatch() || System.isFuture()) {
+            // Avoid making callouts in batch or future context
+            return;
+        }
         for(case c : newRecords) {
             // Here you can add any logic you want to execute after a case is inserted
             // For example, you can call the zendeskTicketUtils.createTicket method to create a ticket in Zendesk
